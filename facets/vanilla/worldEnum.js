@@ -1,0 +1,34 @@
+export const GameMode = {
+    SURVIVAL: 0,
+    CREATIVE: 1,
+    ADVENTURE: 2
+}
+export const Difficulty = {
+    PEACEFUL: 0,
+    EASY: 1,
+    NORMAL: 2,
+    HARD: 3
+}
+
+export const GeneralMultiplayerWarningState = {
+    NONE: 0,
+    CHECK_INTERNET_CONNECTION: 1,
+    DISCONNECTED_THIRD_PARTY_WITH_SUBSCRIPTION: 2,
+    LOCAL_MULTIPLAYER_PRIVILEGES_BLOCKED_THIRD_PARTY: 3,
+    MULTIPLAYER_PRIVILEGES_BLOCKED_THIRD_PARTY: 4,
+    MULTIPLAYER_PRIVILEGES_BLOCKED: 5,
+    MULTIPLAYER_PRIVILEGES_BLOCKED_ON_CONSOLE: 6,
+    CROSS_PLATFORM_DISABLED: 7
+};
+
+export const PlayerPermissions = {
+    VISITOR:0,
+    MEMBER:1, 
+    OPERATOR:2
+}
+
+export const PlayerAccess = {
+    INVITED:1,
+    FRIENDS:2, 
+    FRIENDS_OF_FRIENDS:3
+}

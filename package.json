@@ -1,0 +1,25 @@
+{
+  "name": "ore-ui-preview",
+  "version": "1.0.0",
+  "description": "预览Minecraft的OreUI",
+  "main": "engine.js",
+  "type": "module",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuixiang0130/ore-ui-preview.git"
+  },
+  "author": "cuixiang0130",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/cuixiang0130/ore-ui-preview#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/register": "^7.21.0",
+    "del": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "gulp-replace": "^1.1.4",
+    "webpack-stream": "^7.0.0"
+  }
+}
