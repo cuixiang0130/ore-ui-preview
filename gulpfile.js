@@ -15,6 +15,9 @@ export function buildScripts() {
         mode: "production",
         output: {
             filename: "engine.js"
+        },
+        experiments: {
+            topLevelAwait: true
         }
     })).pipe(gulp.dest('dist'));
 }
@@ -27,7 +30,7 @@ async function getMinecraftPath() {
 
 export async function copyFiles() {
     const path = await getMinecraftPath()
-    gulp.src([`${path}/data/gui/dist/hbui/**/*`,`!${path}/data/gui/dist/hbui/*.html`]).pipe(gulp.dest("dist/hbui"));
+    gulp.src([`${path}/data/gui/dist/hbui/**/*`, `!${path}/data/gui/dist/hbui/*.html`]).pipe(gulp.dest("dist/hbui"));
     gulp.src(`${path}/data/resource_packs/oreui/texts/*.lang`).pipe(gulp.dest("dist/hbui"));
     gulp.src(`${path}/data/gui/dist/hbui/*.html`).pipe(replace('<script', '<script src="/engine.js"></script><script')).pipe(gulp.dest("dist/hbui"));
 }

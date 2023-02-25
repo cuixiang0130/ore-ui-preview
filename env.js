@@ -18,6 +18,9 @@ function createProxy(name, obj) {
 
 const translations = {};
 
+let soundDefinitions = {};
+
+
 window.__FACETS__ = {};
 
 export const env = {
@@ -74,33 +77,50 @@ export const env = {
     }
   },
 
-  defaultRoute: '/create-new-world',
+  defaultRoute : '/achievements',
 
   lang: navigator.language || "en_US",
+
   translate(key) {
     return translations[key]
   },
 
-  soundDefinitions: {},
-  playSound: function (name) {
-    new Audio(name).play();
-  },
+  playSound: function (key) {
+    const soundDefinition = soundDefinitions[key];
+    if (soundDefinition && soundDefinition.sounds.length != false) {
+      let randomSound = soundDefinition.sounds[Math.floor(Math.random() * soundDefinition.sounds.length)].name;
+      new Audio(randomSound).play();
+    } else {
+      console.warn(`[Sound] Missing sound for key :${key}`);
+    }
+  }
 
 };
 
-
 fetch(`/hbui/${env.lang.replace("-", "_")}.lang`)
   .then((response) => response.text())
-  .then((locdat) => {
-    let lines = locdat.split("\n");
-    lines.forEach(function (item, ind) {
-      const keyval = item.split("=");
+  .then((langs) => {
+    let lines = langs.split("\n");
+    for (let line of lines) {
+      const keyval = line.split("=");
       translations[keyval[0]] = keyval[1]?.replace("\r", "").replace(/#.*/g, "");
-    });
+    }
   })
 
-fetch("/hbui/sound_definitions.json")
-  .then((response) => env.soundDefinitions = response.json())
 
 
+fetch("/hbui/sound_definitions.json").then((response) => response.json()).then((response)=>{
+  soundDefinitions = response;
+})
+
+
+await fetch("/hbui/routes.json").then((response) => response.json()).then((response) => {
+  const routes = response.routes
+  const pathname = window.location.pathname;
+  for (let route of routes) {
+    if (pathname == route.fileName)
+      env.defaultRoute = route.defaultRoute
+  }
+  console.log(env.defaultRoute)
+})
 
