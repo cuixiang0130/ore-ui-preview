@@ -77,7 +77,7 @@ export const env = {
     }
   },
 
-  defaultRoute : '/achievements',
+  defaultRoute : window.location.hash.slice(1) || '/achievements',
 
   lang: navigator.language || "en_US",
 
@@ -107,20 +107,7 @@ fetch(`/hbui/${env.lang.replace("-", "_")}.lang`)
     }
   })
 
-
-
 fetch("/hbui/sound_definitions.json").then((response) => response.json()).then((response)=>{
   soundDefinitions = response;
-})
-
-
-await fetch("/hbui/routes.json").then((response) => response.json()).then((response) => {
-  const routes = response.routes
-  const pathname = window.location.pathname;
-  for (let route of routes) {
-    if (pathname == route.fileName)
-      env.defaultRoute = route.defaultRoute
-  }
-  console.log(env.defaultRoute)
 })
 

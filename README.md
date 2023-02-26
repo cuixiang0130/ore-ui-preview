@@ -2,7 +2,7 @@
 预览Minecraft的OreUI
 
 ## Usage
-
+安装依赖
 ```shell
 npm install
 ```
@@ -11,6 +11,4 @@ npm install
 gulp run
 ```
 
-在浏览器中访问<http://localhost:8080/hbui/index.html>
-
-
+在浏览器中访问<http://localhost:8080/hbui/index.html#/create-new-world>

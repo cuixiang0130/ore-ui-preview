@@ -7,10 +7,11 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import replace from 'gulp-replace';
 import connect from 'gulp-connect';
+import * as fs from 'fs'
 
 export const clean = () => deleteAsync(['dist']);
 
-export function buildScripts() {
+export function build() {
     return gulp.src('engine.js').pipe(webpackStream({
         mode: "production",
         output: {
@@ -19,7 +20,7 @@ export function buildScripts() {
         experiments: {
             topLevelAwait: true
         }
-    })).pipe(gulp.dest('dist'));
+    })).pipe(gulp.dest('dist')).pipe(connect.reload());
 }
 
 async function getMinecraftPath() {
@@ -30,6 +31,7 @@ async function getMinecraftPath() {
 
 export async function copyFiles() {
     const path = await getMinecraftPath()
+    console.log('MinecraftPath: ' + path)
     gulp.src([`${path}/data/gui/dist/hbui/**/*`, `!${path}/data/gui/dist/hbui/*.html`]).pipe(gulp.dest("dist/hbui"));
     gulp.src(`${path}/data/resource_packs/oreui/texts/*.lang`).pipe(gulp.dest("dist/hbui"));
     gulp.src(`${path}/data/gui/dist/hbui/*.html`).pipe(replace('<script', '<script src="/engine.js"></script><script')).pipe(gulp.dest("dist/hbui"));
@@ -38,12 +40,15 @@ export async function copyFiles() {
 export async function server() {
     connect.server({
         root: 'dist',
-        port: 8080,
-        livereload: true
+        port: 8080
     })
-    console.log('Open http://localhost:8080/hbui/index.html in your browser')
+    const routes = JSON.parse(fs.readFileSync('./dist/hbui/routes.json'))
+    for (let route of routes.routes) {
+        const fileName = route.fileName
+        if (fs.existsSync(`./dist${fileName}`))
+            console.log(`http://localhost:8080${fileName}#${route.defaultRoute}`)
+    }
 }
 
-export const build = gulp.parallel(buildScripts, copyFiles)
+export const run = gulp.series(clean,copyFiles,build,server)
 
-export const run = gulp.series(build, server)
